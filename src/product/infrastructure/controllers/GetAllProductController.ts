@@ -16,9 +16,9 @@ export class GetAllProductController {
           data: products.map((product: any) => {
             return {
               id: product.id,
-              name: product.name,
-              description: product.description,
-              price: product.price,
+              Temperatura: product.Temperatura,
+              Humedad: product.Humedad,
+              Mensaje: product.Mensaje,
             };
           }),
         });

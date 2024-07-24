@@ -10,9 +10,9 @@ export class CreateProductController {
     const data = req.body;
     try {
       const product = await this.createProductUseCase.run(
-        data.name,
-        data.description,
-        data.price
+        data.Temperatura,
+        data.Humedad,
+        data.Mensaje
       );
 
       if (product)
@@ -21,9 +21,9 @@ export class CreateProductController {
           status: "success",
           data: {
             id: product?.id,
-            name: product?.name,
-            description: product?.description,
-            price: product?.price,
+            Temperatura: product?.Temperatura,
+            Humedad: product?.Humedad,
+            Mensaje: product?.GasLP,
           },
         });
       else

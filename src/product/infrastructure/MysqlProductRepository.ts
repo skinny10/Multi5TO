@@ -4,18 +4,18 @@ import { ProductRepository } from "../domain/ProductRepository";
 
 export class MysqlProductRepository implements ProductRepository {
   async getAll(): Promise<Product[] | null> {
-    const sql = "SELECT * FROM product";
+    const sql = "SELECT * FROM Product";
     try {
-      const [data]: any = await query(sql, []);
+      const [data]: [any[], any] = await query(sql, []);
       const dataProducts = Object.values(JSON.parse(JSON.stringify(data)));
 
       return dataProducts.map(
         (product: any) =>
           new Product(
             product.id,
-            product.name,
-            product.description,
-            product.price
+            product.Temperatura ?? null,
+            product.Humedad ?? null,
+            product.GasLP ?? null
           )
       );
     } catch (error) {
@@ -24,18 +24,17 @@ export class MysqlProductRepository implements ProductRepository {
   }
 
   async getById(userId: number): Promise<Product | null> {
-    const sql = "SELECT * FROM product WHERE id=?";
-    const params: any[] = [userId];
+    const sql = "SELECT * FROM Product WHERE id=?";
+    const params: (string | number)[] = [userId];
     try {
-      const [result]: any = await query(sql, params);
-      //El objeto Result es un objeto que contiene info generada de la bd
-      /*No es necesaria la validación de la cantidad de filas afectadas, ya que, al
-            estar dentro de un bloque try/catch si hay error se captura en el catch */
+      const [result]: [any[], any] = await query(sql, params);
+      if (result.length === 0) return null;
+
       return new Product(
         result[0].id,
-        result[0].name,
-        result[0].description,
-        result[0].price
+        result[0].Temperatura ?? null,
+        result[0].Humedad ?? null,
+        result[0].GasLP ?? null
       );
     } catch (error) {
       return null;
@@ -43,19 +42,20 @@ export class MysqlProductRepository implements ProductRepository {
   }
 
   async createProduct(
-    name: string,
-    description: string,
-    price: number
+    Temperatura: string,
+    Humedad: number,
+    GasLP: number
   ): Promise<Product | null> {
     const sql =
-      "INSERT INTO product (name, description, price) VALUES (?, ?, ?)";
-    const params: any[] = [name, description, price];
+      "INSERT INTO Product (Temperatura, Humedad, GasLP) VALUES (?, ?, ?)";
+    const params: (string | number)[] = [
+      Temperatura,
+      Humedad,
+      GasLP
+    ];
     try {
       const [result]: any = await query(sql, params);
-      //El objeto Result es un objeto que contiene info generada de la bd
-      /*No es necesaria la validación de la cantidad de filas afectadas, ya que, al
-            estar dentro de un bloque try/catch si hay error se captura en el catch */
-      return new Product(result.insertId, name, description, price);
+      return new Product(result.insertId, Temperatura, Humedad, GasLP);
     } catch (error) {
       return null;
     }

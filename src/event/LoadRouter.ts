@@ -3,10 +3,10 @@ import express from "express";
 
 const config = {
   protocol: "amqp",
-  hostname: "54.209.207.245",
+  hostname: "23.22.88.118",
   port: 5672,
-  username: "alilopez",
-  password: "123456",
+  username: "guest",
+  password: "guest",
 };
 
 export const loadRouter = express.Router();

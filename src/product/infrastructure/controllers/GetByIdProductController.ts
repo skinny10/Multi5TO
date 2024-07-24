@@ -16,9 +16,9 @@ export class GetByIdProductController {
           status: "success",
           data: {
             id: product.id,
-            name: product.name,
-            description: product.description,
-            price: product.price,
+            Temperatura: product.Temperatura,
+            Humedad: product.Humedad,
+            Mensaje: product.GasLP,
           },
         });
       else
